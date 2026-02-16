@@ -1,0 +1,22 @@
+services:
+  speedtest:
+    build: .
+    container_name: speedtest
+    restart: unless-stopped
+    environment:
+      - SPEEDTEST_API_KEY=${SPEEDTEST_API_KEY}
+      - SPEEDTEST_DOMAIN=${SPEEDTEST_DOMAIN}
+    volumes:
+      - ${SPEEDTEST_DATA_DIR:-./data}:/data
+    networks:
+      - proxy_net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.speedtest.rule=Host(`${SPEEDTEST_DOMAIN}`)"
+      - "traefik.http.routers.speedtest.entrypoints=websecure"
+      - "traefik.http.routers.speedtest.tls.certresolver=letsencrypt"
+      - "traefik.http.services.speedtest.loadbalancer.server.port=8000"
+
+networks:
+  proxy_net:
+    external: true
