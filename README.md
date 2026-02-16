@@ -4,6 +4,10 @@ A Dockerised FastAPI service providing API-key-protected file upload/download
 with SHA-256 checksum verification, designed for measuring connection speed and
 reliability to a VPS. Includes a zero-dependency Python client.
 
+## Background
+
+I'm setting up my OpenClaw and IronClaw instances in hardened VM's on my main Proxmox instance.  I don't want to give the agents in this VM my key secrets and prefer it not to know my residential ISP addresses and so I'm adding proxies and brokers and whatnot *OUTSIDE* of the VM and route it's outgoing internet via a vlan and one of my pfsense VM's to use a NordVPN client I have setup on there.  This way I can take measures to guard against DNS leaks and the like.  I also drop any outgoing private range packets *except* to my proxies and brokers as required - via a Caddy reverse proxy for layer 7 url filtering.  e.g. to avoid some vulnerabilities ... e.g. vLLM had a vulnerability on its endpoints that wouldn't be exposed if only the completions endpoint was accessible.  Although I'm using liteLLM anyway with virtual keys to prevent key leakage if my OpenClaw et al are compromised, even to my local vLLM endpoints.  It leaves the door open for inserting some protection against prompt injection too.  Because I'm routing internet access via NordVPN it's useful to have a script to check network connectivity and since I have a VPS handy it makes sense to use that.  I developed these scripts in an hour or so - with some back and forth and testing and evolution etc.  Without Generative AI this would have taken me many hours and indeed was on my TODO list for years!  Hopefully it's secure(ish) lol.  :)  (I have reviewed it and can't see anything obvious).
+
 ## ⚠️ AI-Generated Content Notice
 
 This project was **generated with AI assistance** and should be treated accordingly:
